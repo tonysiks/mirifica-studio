@@ -645,29 +645,163 @@
       line-height: 1.7;
     }
 
-    /* REALISATIONS */
-    .realisations-placeholder {
-      margin-top: 4rem;
-      background: var(--bg2);
-      border: 1px dashed rgba(255,255,255,0.1);
-      border-radius: 8px;
-      padding: 4rem;
-      text-align: center;
+    /* REALISATIONS 3D CAROUSEL */
+    #realisations {
+      overflow: hidden;
+      padding-left: 0;
+      padding-right: 0;
     }
 
-    .realisations-placeholder p {
+    .realisations-header {
+      padding: 0 4rem;
+    }
+
+    .carousel-scene {
+      position: relative;
+      width: 100%;
+      height: 520px;
+      perspective: 1100px;
+      perspective-origin: 50% 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 5rem;
+    }
+
+    .carousel-scene::before,
+    .carousel-scene::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 300px;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .carousel-scene::before {
+      left: 0;
+      background: linear-gradient(to right, var(--bg) 0%, transparent 100%);
+    }
+
+    .carousel-scene::after {
+      right: 0;
+      background: linear-gradient(to left, var(--bg) 0%, transparent 100%);
+    }
+
+    .carousel-ring {
+      width: 260px;
+      height: 380px;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: carousel-spin 32s linear infinite;
+      will-change: transform;
+    }
+
+    .carousel-ring.paused {
+      animation-play-state: paused;
+    }
+
+    @keyframes carousel-spin {
+      from { transform: rotateY(0deg); }
+      to   { transform: rotateY(-360deg); }
+    }
+
+    .carousel-card {
+      position: absolute;
+      top: 0; left: 0;
+      width: 260px;
+      height: 380px;
+      border-radius: 16px;
+      backface-visibility: hidden;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.07);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.75rem;
+      will-change: transform;
+    }
+
+    .carousel-card:nth-child(1) { transform: rotateY(0deg)   translateZ(420px); }
+    .carousel-card:nth-child(2) { transform: rotateY(45deg)  translateZ(420px); }
+    .carousel-card:nth-child(3) { transform: rotateY(90deg)  translateZ(420px); }
+    .carousel-card:nth-child(4) { transform: rotateY(135deg) translateZ(420px); }
+    .carousel-card:nth-child(5) { transform: rotateY(180deg) translateZ(420px); }
+    .carousel-card:nth-child(6) { transform: rotateY(225deg) translateZ(420px); }
+    .carousel-card:nth-child(7) { transform: rotateY(270deg) translateZ(420px); }
+    .carousel-card:nth-child(8) { transform: rotateY(315deg) translateZ(420px); }
+
+    .carousel-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.78) 100%);
+      pointer-events: none;
+    }
+
+    .card-accent {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--c, var(--accent));
+      opacity: 0.85;
+      z-index: 2;
+    }
+
+    .card-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .card-num {
       font-family: var(--font-mono);
-      font-size: 0.82rem;
-      color: var(--muted);
-      letter-spacing: 0.05em;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      color: rgba(255,255,255,0.28);
+      margin-bottom: 0.6rem;
+      text-transform: uppercase;
     }
 
-    .realisations-placeholder strong {
-      display: block;
+    .card-type {
       font-family: var(--font-display);
-      font-size: 1.5rem;
-      color: var(--text);
-      margin-bottom: 0.75rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 0.45rem;
+    }
+
+    .card-city {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.42);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-transform: uppercase;
+    }
+
+    .card-city::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--c, var(--accent));
+      opacity: 0.85;
+      flex-shrink: 0;
+    }
+
+    .carousel-hint {
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.67rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-top: 2.5rem;
+      opacity: 0.45;
+      padding: 0 4rem;
+      text-transform: uppercase;
     }
 
     /* CONTACT */
@@ -993,12 +1127,88 @@
 
   <!-- REALISATIONS -->
   <section id="realisations">
-    <div class="section-tag reveal">Réalisations</div>
-    <h2 class="section-title reveal">Nos derniers projets.</h2>
-    <div class="realisations-placeholder reveal">
-      <strong>Bientôt disponible</strong>
-      <p>Nos premières réalisations arrivent. Revenez très vite.</p>
+    <div class="realisations-header">
+      <div class="section-tag reveal">Réalisations</div>
+      <h2 class="section-title reveal">Nos derniers projets.</h2>
     </div>
+    <div class="carousel-scene" id="carouselScene">
+      <div class="carousel-ring" id="carouselRing">
+
+        <div class="carousel-card" style="background: linear-gradient(145deg, #0c0100 0%, #2d0d00 55%, #5c1e00 100%); --c: #e87c1e;">
+          <div class="card-accent"></div>
+          <div class="card-content">
+            <div class="card-num">/ 01</div>
+            <div class="card-type">Boulangerie</div>
+            <div class="card-city">Bordeaux</div>
+          </div>
+        </div>
+
+        <div class="carousel-card" style="background: linear-gradient(145deg, #0d0003 0%, #2d0010 55%, #5c001f 100%); --c: #e81e3c;">
+          <div class="card-accent"></div>
+          <div class="card-content">
+            <div class="card-num">/ 02</div>
+            <div class="card-type">Restaurant gastronomique</div>
+            <div class="card-city">Lyon</div>
+          </div>
+        </div>
+
+        <div class="carousel-card" style="background: linear-gradient(145deg, #00020d 0%, #001030 55%, #00205c 100%); --c: #1e80e8;">
+          <div class="card-accent"></div>
+          <div class="card-content">
+            <div class="card-num">/ 03</div>
+            <div class="card-type">Salon de coiffure</div>
+            <div class="card-city">Nantes</div>
+          </div>
+        </div>
+
+        <div class="carousel-card" style="background: linear-gradient(145deg, #00100a 0%, #002d1e 55%, #005c38 100%); --c: #1ee87a;">
+          <div class="card-accent"></div>
+          <div class="card-content">
+            <div class="card-num">/ 04</div>
+            <div class="card-type">Pharmacie bien-être</div>
+            <div class="card-city">Toulouse</div>
+          </div>
+        </div>
+
+        <div class="carousel-card" style="background: linear-gradient(145deg, #001010 0%, #002c2b 55%, #005a58 100%); --c: #1ee8e0;">
+          <div class="card-accent"></div>
+          <div class="card-content">
+            <div class="card-num">/ 05</div>
+            <div class="card-type">Garage automobile</div>
+            <div class="card-city">Rennes</div>
+          </div>
+        </div>
+
+        <div class="carousel-card" style="background: linear-gradient(145deg, #0e0d00 0%, #302d00 55%, #5f5a00 100%); --c: #e8c41e;">
+          <div class="card-accent"></div>
+          <div class="card-content">
+            <div class="card-num">/ 06</div>
+            <div class="card-type">Épicerie fine</div>
+            <div class="card-city">Montpellier</div>
+          </div>
+        </div>
+
+        <div class="carousel-card" style="background: linear-gradient(145deg, #0d0010 0%, #2d002c 55%, #5c0059 100%); --c: #e81ec8;">
+          <div class="card-accent"></div>
+          <div class="card-content">
+            <div class="card-num">/ 07</div>
+            <div class="card-type">Institut de beauté</div>
+            <div class="card-city">Strasbourg</div>
+          </div>
+        </div>
+
+        <div class="carousel-card" style="background: linear-gradient(145deg, #050010 0%, #14002d 55%, #28005c 100%); --c: #9b1ee8;">
+          <div class="card-accent"></div>
+          <div class="card-content">
+            <div class="card-num">/ 08</div>
+            <div class="card-type">Cave à vins</div>
+            <div class="card-city">Dijon</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <p class="carousel-hint">— Survolez pour mettre en pause —</p>
   </section>
 
   <!-- CONTACT -->
@@ -1042,6 +1252,14 @@
     }, { threshold: 0.1 });
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // CAROUSEL 3D
+    const carouselScene = document.getElementById('carouselScene');
+    const carouselRing  = document.getElementById('carouselRing');
+    if (carouselScene && carouselRing) {
+      carouselScene.addEventListener('mouseenter', () => carouselRing.classList.add('paused'));
+      carouselScene.addEventListener('mouseleave', () => carouselRing.classList.remove('paused'));
+    }
 
     // FAQ
     document.querySelectorAll('.faq-question').forEach(btn => {
