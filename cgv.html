@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CGV — Mirifica Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080a0e;
+      --bg2: #0d1117;
+      --bg3: #111820;
+      --accent: #00e5a0;
+      --accent2: #00b8ff;
+      --text: #f0f4f8;
+      --muted: #6b7a8d;
+      --border: rgba(255,255,255,0.06);
+      --border-accent: rgba(0,229,160,0.25);
+      --font-display: 'Syne', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 4rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8,10,14,0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: inline-block;
+      box-shadow: 0 0 8px var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--accent); }
+      50% { opacity: 0.5; box-shadow: 0 0 16px var(--accent); }
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+      padding: 0.55rem 1.25rem;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      background: transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .nav-cta:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    /* PAGE HEADER */
+    .page-header {
+      padding: 10rem 4rem 5rem;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,160,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,160,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black, transparent);
+    }
+
+    .page-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      position: relative;
+    }
+
+    .page-tag::before {
+      content: '';
+      display: block;
+      width: 32px; height: 1px;
+      background: var(--accent);
+    }
+
+    .page-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      position: relative;
+    }
+
+    .page-title em {
+      font-style: normal;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(0,229,160,0.6);
+    }
+
+    .page-meta {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      margin-top: 1.5rem;
+      position: relative;
+    }
+
+    /* CONTENT */
+    .cgv-content {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 5rem 4rem 8rem;
+      position: relative;
+    }
+
+    /* TABLE OF CONTENTS */
+    .toc {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .toc-title {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    .toc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .toc-list a {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.03em;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .toc-list a::before {
+      content: '→';
+      color: var(--accent);
+      opacity: 0.5;
+      transition: opacity 0.2s;
+    }
+
+    .toc-list a:hover { color: var(--text); }
+    .toc-list a:hover::before { opacity: 1; }
+
+    /* ARTICLES */
+    .cgv-article {
+      margin-bottom: 4rem;
+      padding-bottom: 4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cgv-article:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .article-num {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .article-num::before {
+      content: '';
+      display: block;
+      width: 20px; height: 1px;
+      background: var(--accent);
+    }
+
+    .article-title {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .article-body p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .article-body p:last-child { margin-bottom: 0; }
+
+    .article-body strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .article-body ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin: 1rem 0;
+    }
+
+    .article-body ul li {
+      font-size: 0.92rem;
+      color: var(--muted);
+      padding-left: 1.5rem;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    .article-body ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+
+    /* SUB ARTICLES */
+    .sub-article {
+      margin-top: 2rem;
+      padding: 1.75rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+
+    .sub-article-title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .sub-article .article-body p {
+      font-size: 0.9rem;
+    }
+
+    /* TABLE */
+    .cgv-table-wrap {
+      overflow-x: auto;
+      margin: 2rem 0;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+
+    .cgv-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      font-family: var(--font-body);
+    }
+
+    .cgv-table thead {
+      background: var(--bg3);
+    }
+
+    .cgv-table th {
+      padding: 0.85rem 1rem;
+      text-align: left;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    .cgv-table th:first-child { color: var(--muted); }
+
+    .cgv-table td {
+      padding: 0.85rem 1rem;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .cgv-table tr:last-child td { border-bottom: none; }
+
+    .cgv-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+    .cgv-table td:first-child {
+      color: var(--text);
+      font-weight: 500;
+      font-size: 0.8rem;
+    }
+
+    .tag-yes {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+    }
+
+    .tag-yes::before { content: '✓ '; }
+
+    .tag-no {
+      display: inline-flex;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      opacity: 0.6;
+    }
+
+    /* HIGHLIGHT BOX */
+    .highlight-box {
+      background: var(--bg3);
+      border: 1px solid var(--border-accent);
+      border-radius: 6px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .highlight-box p {
+      color: var(--muted) !important;
+      font-size: 0.9rem !important;
+      margin-bottom: 0 !important;
+    }
+
+    .highlight-box p strong { color: var(--accent) !important; }
+
+    /* IDENTITE TABLE */
+    .identity-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .identity-item {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+    }
+
+    .identity-label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+    }
+
+    .identity-value {
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .identity-value.placeholder {
+      color: var(--muted);
+      font-style: italic;
+      opacity: 0.7;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 2rem 4rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--accent); }
+
+    .footer-copy {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: rgba(0,229,160,0.3); border-radius: 2px; }
+
+    @media (max-width: 768px) {
+      nav { padding: 1.25rem 1.5rem; }
+      .nav-links { display: none; }
+      .page-header { padding: 8rem 1.5rem 3rem; }
+      .cgv-content { padding: 3rem 1.5rem 5rem; }
+      .identity-grid { grid-template-columns: 1fr; }
+      footer { padding: 2rem 1.5rem; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="logo">
+      <span class="logo-dot"></span>
+      Mirifica Studio
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="index.html#tarifs">Tarifs</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+    </ul>
+    <a href="index.html#contact" class="nav-cta">Démarrer →</a>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <div class="hero-grid"></div>
+    <div class="page-tag">Juridique</div>
+    <h1 class="page-title">Conditions Générales<br>de <em>Vente</em></h1>
+    <p class="page-meta">Version 6.0 — 2026 · Mirifica Studio</p>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="cgv-content">
+
+    <!-- TABLE OF CONTENTS -->
+    <nav class="toc" aria-label="Sommaire">
+      <div class="toc-title">Sommaire</div>
+      <ul class="toc-list">
+        <li><a href="#art1">Art. 1 — Identification du prestataire</a></li>
+        <li><a href="#art2">Art. 2 — Description des offres et livrables</a></li>
+        <li><a href="#art3">Art. 3 — Prestations hors périmètre</a></li>
+        <li><a href="#art4">Art. 4 — Accès et coopération client</a></li>
+        <li><a href="#art5">Art. 5 — Tarifs et conditions de paiement</a></li>
+        <li><a href="#art6">Art. 6 — Délais de livraison</a></li>
+        <li><a href="#art7">Art. 7 — Obligations du client</a></li>
+        <li><a href="#art8">Art. 8 — Propriété intellectuelle</a></li>
+        <li><a href="#art9">Art. 9 — Durée, résiliation et conservation</a></li>
+        <li><a href="#art10">Art. 10 — Responsabilité et garanties</a></li>
+        <li><a href="#art11">Art. 11 — Confidentialité et RGPD</a></li>
+        <li><a href="#art12">Art. 12 — Force majeure</a></li>
+        <li><a href="#art13">Art. 13 — Droit applicable et litiges</a></li>
+        <li><a href="#art14">Art. 14 — Acceptation des CGV</a></li>
+      </ul>
+    </nav>
+
+    <!-- ART 1 -->
+    <article class="cgv-article" id="art1">
+      <div class="article-num">Article 1</div>
+      <h2 class="article-title">Identification du prestataire</h2>
+      <div class="identity-grid">
+        <div class="identity-item">
+          <div class="identity-label">Dénomination</div>
+          <div class="identity-value">Mirifica Studio</div>
+        </div>
+        <div class="identity-item">
+          <div class="identity-label">Nom / Prénom</div>
+          <div class="identity-value placeholder">[à compléter]</div>
+        </div>
+        <div class="identity-item">
+          <div class="identity-label">Statut juridique</div>
+          <div class="identity-value placeholder">[à compléter — ex : Micro-entrepreneur]</div>
+        </div>
+        <div class="identity-item">
+          <div class="identity-label">Adresse du siège</div>
+          <div class="identity-value placeholder">[à compléter]</div>
+        </div>
+        <div class="identity-item">
+          <div class="identity-label">SIRET / SIREN</div>
+          <div class="identity-value placeholder">[à compléter]</div>
+        </div>
+        <div class="identity-item">
+          <div class="identity-label">RCS / RM</div>
+          <div class="identity-value placeholder">[à compléter si concerné]</div>
+        </div>
+        <div class="identity-item">
+          <div class="identity-label">TVA</div>
+          <div class="identity-value">TVA non applicable, art. 293 B du CGI</div>
+        </div>
+        <div class="identity-item">
+          <div class="identity-label">Email</div>
+          <div class="identity-value">mirificastudio@gmail.com</div>
+        </div>
+        <div class="identity-item" style="grid-column: 1 / -1;">
+          <div class="identity-label">Site web</div>
+          <div class="identity-value">mirifica-studio.vercel.app</div>
+        </div>
+      </div>
+      <div class="article-body">
+        <p>Les présentes CGV s'appliquent exclusivement aux relations entre Mirifica Studio et des clients professionnels (B2B) : commerçants, artisans, auto-entrepreneurs, sociétés et associations.</p>
+        <div class="highlight-box">
+          <p><strong>Exception — Droit de rétractation des petits professionnels :</strong> conformément à l'article L.221-3 du Code de la consommation, tout professionnel de moins de 5 salariés dont le contrat est conclu hors établissement (par téléphone, messagerie, Instagram, WhatsApp, etc.) bénéficie d'un délai de rétractation de 14 jours. Si le client souhaite que les travaux démarrent avant l'expiration de ce délai, il doit formuler par écrit la déclaration suivante : <em>"Je demande expressément l'exécution immédiate de la prestation avant la fin du délai de rétractation et reconnais perdre mon droit de rétractation une fois la prestation pleinement exécutée."</em> Cette déclaration doit être transmise par email ou message écrit avant tout démarrage des travaux.</p>
+        </div>
+        <p>Ces CGV prévalent sur tout autre document du client.</p>
+      </div>
+    </article>
+
+    <!-- ART 2 -->
+    <article class="cgv-article" id="art2">
+      <div class="article-num">Article 2</div>
+      <h2 class="article-title">Description des offres et livrables</h2>
+      <div class="article-body">
+        <p>Le tableau ci-dessous récapitule précisément ce qui est inclus dans chaque offre. Toute fonctionnalité non mentionnée est exclue et fait l'objet d'un devis séparé.</p>
+      </div>
+
+      <div class="cgv-table-wrap">
+        <table class="cgv-table">
+          <thead>
+            <tr>
+              <th>Élément livré</th>
+              <th>One-shot 700 €</th>
+              <th>Abonnement 69 €/mois</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Frais de mise en service</td>
+              <td>Inclus dans les 700 €</td>
+              <td>Aucun — création incluse dans le premier mois</td>
+            </tr>
+            <tr>
+              <td>Design sur mesure responsive</td>
+              <td><span class="tag-yes">Oui</span></td>
+              <td><span class="tag-yes">Oui</span></td>
+            </tr>
+            <tr>
+              <td>Nombre de pages incluses</td>
+              <td>5 – 7 pages</td>
+              <td>5 – 7 pages</td>
+            </tr>
+            <tr>
+              <td>Formulaire de contact</td>
+              <td><span class="tag-yes">Oui</span></td>
+              <td><span class="tag-yes">Oui</span></td>
+            </tr>
+            <tr>
+              <td>Interface d'administration client</td>
+              <td><span class="tag-yes">Oui</span></td>
+              <td><span class="tag-yes">Oui</span></td>
+            </tr>
+            <tr>
+              <td>Contenus modifiables</td>
+              <td>Textes, photos, horaires, coordonnées, couleurs et polices dans le cadre du design livré</td>
+              <td>Textes, photos, horaires, coordonnées, couleurs et polices dans le cadre du design livré</td>
+            </tr>
+            <tr>
+              <td>Mentions légales / confidentialité / cookies</td>
+              <td>Inclus (sur base des infos client)</td>
+              <td>Inclus (sur base des infos client)</td>
+            </tr>
+            <tr>
+              <td>Fichiers sources</td>
+              <td>Livrés après paiement intégral</td>
+              <td>Non — transférables après 12 mois honorés et paiement intégral</td>
+            </tr>
+            <tr>
+              <td>Hébergement</td>
+              <td><span class="tag-no">Non inclus</span></td>
+              <td>Inclus — jusqu'à 100 Go bande passante/mois (plan standard)</td>
+            </tr>
+            <tr>
+              <td>Nom de domaine</td>
+              <td><span class="tag-no">Non inclus</span></td>
+              <td>Inclus — extensions .fr/.com/.net/.eu/.org jusqu'à 15 €/an</td>
+            </tr>
+            <tr>
+              <td>Emails professionnels</td>
+              <td>Non inclus — sur devis</td>
+              <td>Non inclus — sur devis</td>
+            </tr>
+            <tr>
+              <td>Sauvegarde mensuelle</td>
+              <td><span class="tag-no">Non</span></td>
+              <td>Oui — conservée 30 jours</td>
+            </tr>
+            <tr>
+              <td>Formation prise en main</td>
+              <td>Oui — 30 min à la livraison</td>
+              <td><span class="tag-no">Non</span></td>
+            </tr>
+            <tr>
+              <td>Support WhatsApp</td>
+              <td>Jour de la livraison uniquement</td>
+              <td>Lun-Ven 9h-18h, hors jours fériés — urgences exclues</td>
+            </tr>
+            <tr>
+              <td>Modifications de contenu</td>
+              <td>2 révisions incluses, puis 50 €/h</td>
+              <td>5 demandes/mois non reportables, puis 30 €/demande</td>
+            </tr>
+            <tr>
+              <td>SEO</td>
+              <td>Titres, metas, structure Hn, indexation, sitemap</td>
+              <td>Idem + optimisation régulière — sans garantie de position</td>
+            </tr>
+            <tr>
+              <td>Système de réservation</td>
+              <td>Non inclus — sur devis</td>
+              <td>Non inclus — sur devis</td>
+            </tr>
+            <tr>
+              <td>Migration hébergeur</td>
+              <td><span class="tag-no">Non applicable</span></td>
+              <td>Forfait 150 €</td>
+            </tr>
+            <tr>
+              <td>Paiement en ligne / e-commerce</td>
+              <td>Non — sur devis</td>
+              <td>Non — sur devis</td>
+            </tr>
+            <tr>
+              <td>Espace membre / tunnel de vente</td>
+              <td>Non — sur devis</td>
+              <td>Non — sur devis</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-article">
+        <div class="sub-article-title">2.1 — Offre One-shot (700 €)</div>
+        <div class="article-body">
+          <p>Création complète d'un site web vitrine sur mesure de 5 à 7 pages, paiement unique. Le client devient propriétaire du code et du design custom après paiement intégral, à l'exclusion des composants, librairies, polices et ressources tiers soumis à leurs propres licences open source ou Creative Commons.</p>
+          <p>Les 2 révisions incluses sont définies comme des modifications simples portant sur un même élément ou une même page. Une révision = une demande portant sur un seul élément ou une seule page. Sont exclus : changement de direction artistique, ajout de pages ou fonctionnalités — sur devis séparé.</p>
+          <p>Formation de 30 minutes incluse le jour de la livraison. Aucun support WhatsApp après ce jour.</p>
+          <p>Mentions légales, politique de confidentialité et bandeau cookies inclus sur base des informations fournies par le client — aide documentaire et technique uniquement, pas un audit juridique.</p>
+        </div>
+      </div>
+
+      <div class="sub-article">
+        <div class="sub-article-title">2.2 — Offre Abonnement (69 €/mois — engagement 12 mois minimum)</div>
+        <div class="article-body">
+          <p>Aucun frais de mise en service. La création complète du site est incluse dans le premier mois. Le client paie 69 €/mois dès la signature, création incluse.</p>
+          <p>Support WhatsApp disponible du lundi au vendredi de 9h à 18h, hors jours fériés. Interventions urgentes hors de ces horaires non incluses et facturables séparément.</p>
+          <p>SEO de base : optimisation des titres, meta descriptions, structure Hn, indexation et sitemap XML. Sans garantie de positionnement Google.</p>
+          <p>Demandes de modification : une demande = une modification simple portant sur un même élément ou une même page. Limite de 5 demandes par mois calendaire, non reportables au mois suivant. Les demandes non utilisées sont perdues. Au-delà : 30 € par demande supplémentaire.</p>
+          <p>Hébergement inclus jusqu'à 100 Go de bande passante par mois (limites du plan technique standard). En cas de dépassement, Mirifica Studio se réserve le droit d'ajuster la facturation après information préalable du client.</p>
+          <p>Nom de domaine inclus pour les extensions classiques (.fr, .com, .net, .eu, .org) jusqu'à 15 €/an. Toute extension premium ou tarif annuel supérieur fera l'objet d'une facturation complémentaire au client.</p>
+          <p>Fichiers sources non livrés pendant l'abonnement. Transférables uniquement après 12 mois honorés et règlement intégral, dans un délai de 30 jours.</p>
+          <p>En cas de résiliation avant 12 mois : site suspendu à la date de fin de contrat. Fichiers sources non disponibles avant la fin de la période d'engagement honorée. Nom de domaine transféré dans les 30 jours après règlement intégral.</p>
+          <p>Emails professionnels non inclus — configuration possible sur devis.</p>
+          <p>Migration vers autre hébergeur : forfait 150 €. L'hébergement après migration est à la charge exclusive du client.</p>
+          <p>Sauvegarde mensuelle conservée 30 jours.</p>
+          <p>Mentions légales, politique de confidentialité et bandeau cookies inclus sur base des informations fournies par le client — aide documentaire et technique uniquement.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- ART 3 -->
+    <article class="cgv-article" id="art3">
+      <div class="article-num">Article 3</div>
+      <h2 class="article-title">Prestations hors périmètre</h2>
+      <div class="article-body">
+        <p>Les prestations suivantes ne sont pas incluses dans les offres standard et font l'objet d'un devis séparé :</p>
+        <ul>
+          <li>Système de réservation en ligne</li>
+          <li>Paiement en ligne et e-commerce</li>
+          <li>Tunnel de vente</li>
+          <li>Site multilingue</li>
+          <li>Espace membre</li>
+          <li>Automatisations et intégrations API complexes</li>
+          <li>Copywriting et rédaction de contenus</li>
+          <li>Création de logo et identité visuelle</li>
+          <li>Photographie et retouche d'images</li>
+          <li>Configuration d'emails professionnels</li>
+          <li>Publicité en ligne (Google Ads, Meta Ads)</li>
+          <li>Audit juridique RGPD complet</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- ART 4 -->
+    <article class="cgv-article" id="art4">
+      <div class="article-num">Article 4</div>
+      <h2 class="article-title">Accès et coopération client</h2>
+      <div class="article-body">
+        <p>Pour certaines prestations, le client peut être amené à fournir des accès à des services tiers : registrar, hébergeur, Google Business Profile, réseaux sociaux, outils tiers, etc.</p>
+        <p>Le client s'engage à fournir des accès valides, complets et fonctionnels dans les délais convenus. Mirifica Studio ne saurait être tenu responsable de tout retard ou dysfonctionnement résultant d'accès erronés, incomplets, expirés ou bloqués.</p>
+        <p>Mirifica Studio s'engage à traiter ces accès avec confidentialité et à ne les utiliser que dans le cadre strict de la prestation commandée.</p>
+      </div>
+    </article>
+
+    <!-- ART 5 -->
+    <article class="cgv-article" id="art5">
+      <div class="article-num">Article 5</div>
+      <h2 class="article-title">Tarifs et conditions de paiement</h2>
+      <div class="article-body">
+        <div class="sub-article">
+          <div class="sub-article-title">5.1 — Offre One-shot</div>
+          <div class="article-body">
+            <ul>
+              <li>Acompte de <strong>50 % (350 €)</strong> dû à la signature, avant tout démarrage des travaux.</li>
+              <li>Solde de <strong>50 % (350 €)</strong> dû à la livraison, avant mise en ligne.</li>
+              <li>Aucun travail ne sera démarré avant réception de l'acompte.</li>
+              <li>Modifications supplémentaires après les 2 révisions incluses : <strong>50 €/heure</strong>.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="sub-article" style="margin-top: 1rem;">
+          <div class="sub-article-title">5.2 — Offre Abonnement</div>
+          <div class="article-body">
+            <ul>
+              <li>Premier mois dû à la signature, avant démarrage des travaux.</li>
+              <li>Facturation mensuelle, le même jour chaque mois.</li>
+              <li>Paiement par virement bancaire ou prélèvement automatique.</li>
+              <li>Le délai de paiement ne peut excéder <strong>30 jours</strong> après émission de la facture, sauf accord écrit entre les parties dans la limite légale de 60 jours.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="highlight-box" style="margin-top: 1.5rem;">
+          <p><strong>Pénalités de retard :</strong> en cas de retard de paiement, des pénalités sont appliquées au taux de 3 fois le taux d'intérêt légal en vigueur, à compter du jour suivant la date d'échéance, sans nécessité de mise en demeure préalable. Une indemnité forfaitaire de recouvrement de <strong>40 €</strong> est automatiquement due conformément à l'article L.441-10 du Code de commerce.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- ART 6 -->
+    <article class="cgv-article" id="art6">
+      <div class="article-num">Article 6</div>
+      <h2 class="article-title">Délais de livraison et définition de la livraison</h2>
+      <div class="article-body">
+        <p>Le délai de livraison estimé est de <strong>7 jours ouvrés</strong> à compter de la réception de l'acompte (ou premier paiement mensuel) ET de l'ensemble des éléments nécessaires fournis par le client.</p>
+        <p>La livraison est réputée effectuée dès lors que les trois conditions suivantes sont réunies :</p>
+        <ul>
+          <li>le site est accessible en ligne ou un lien de prévisualisation est transmis,</li>
+          <li>les accès à l'interface d'administration sont communiqués au client,</li>
+          <li>la facture finale est émise.</li>
+        </ul>
+        <p>Le client dispose de <strong>7 jours ouvrés</strong> pour formuler ses retours après livraison. Les retours doivent être transmis de manière centralisée et par écrit uniquement (email ou message WhatsApp). Tout retour transmis par un autre canal ou de manière fragmentée sur plusieurs jours ne sera pas pris en compte dans le délai de validation. Sans retour écrit centralisé dans ce délai, le site est réputé validé et accepté.</p>
+      </div>
+    </article>
+
+    <!-- ART 7 -->
+    <article class="cgv-article" id="art7">
+      <div class="article-num">Article 7</div>
+      <h2 class="article-title">Obligations du client et fourniture des contenus</h2>
+      <div class="article-body">
+        <p>Le client s'engage à fournir l'ensemble des contenus nécessaires dans un délai de <strong>14 jours</strong> suivant la signature et le paiement. Passé ce délai, Mirifica Studio se réserve le droit de :</p>
+        <ul>
+          <li>Repousser la date de livraison sans pénalité ni délai ferme.</li>
+          <li>Démarrer avec du contenu provisoire — remplacement ultérieur facturé 50 €/heure.</li>
+          <li>Facturer des frais de remise en route de <strong>100 €</strong> si le projet reste bloqué plus de 30 jours.</li>
+        </ul>
+        <p>Le client s'engage à répondre aux demandes de validation sous 5 jours ouvrés et à détenir tous les droits nécessaires sur les contenus transmis. Mirifica Studio ne pourra être tenu responsable des contenus fournis par le client.</p>
+      </div>
+    </article>
+
+    <!-- ART 8 -->
+    <article class="cgv-article" id="art8">
+      <div class="article-num">Article 8</div>
+      <h2 class="article-title">Propriété intellectuelle</h2>
+      <div class="article-body">
+        <div class="sub-article">
+          <div class="sub-article-title">8.1 — Offre One-shot</div>
+          <div class="article-body">
+            <p>La cession des droits sur le code et le design custom n'intervient qu'après paiement intégral. Le site peut intégrer des composants, librairies, polices ou ressources tiers soumis à leurs propres licences open source ou Creative Commons, qui restent applicables indépendamment.</p>
+          </div>
+        </div>
+        <div class="sub-article" style="margin-top: 1rem;">
+          <div class="sub-article-title">8.2 — Offre Abonnement</div>
+          <div class="article-body">
+            <p>Le site et son code source demeurent la propriété de Mirifica Studio pendant toute la durée du contrat. Transférable uniquement après 12 mois honorés et règlement intégral, dans un délai de 30 jours.</p>
+          </div>
+        </div>
+        <div class="sub-article" style="margin-top: 1rem;">
+          <div class="sub-article-title">8.3 — Droit de référence</div>
+          <div class="article-body">
+            <p>Sauf opposition écrite du client, Mirifica Studio pourra mentionner le client comme référence et présenter le site dans son portfolio et ses supports commerciaux.</p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ART 9 -->
+    <article class="cgv-article" id="art9">
+      <div class="article-num">Article 9</div>
+      <h2 class="article-title">Durée, résiliation, suspension et conservation</h2>
+      <div class="article-body">
+        <div class="sub-article">
+          <div class="sub-article-title">9.1 — Offre One-shot</div>
+          <div class="article-body">
+            <p>La prestation prend fin à la livraison et au paiement intégral. L'acompte reste acquis en cas d'annulation après démarrage.</p>
+          </div>
+        </div>
+        <div class="sub-article" style="margin-top: 1rem;">
+          <div class="sub-article-title">9.2 — Offre Abonnement</div>
+          <div class="article-body">
+            <p>Engagement minimum de <strong>12 mois</strong>. Renouvellement tacite par mois, résiliable avec préavis de 30 jours. En cas de résiliation anticipée : indemnité égale aux mois restants dus ou forfait de <strong>500 €</strong>, selon le montant le plus favorable au client.</p>
+            <p>En cas de non-paiement après mise en demeure sous 15 jours : suspension immédiate de l'accès au site, au support et aux modifications. Résiliation possible du contrat.</p>
+          </div>
+        </div>
+        <div class="sub-article" style="margin-top: 1rem;">
+          <div class="sub-article-title">9.3 — Conservation post-résiliation</div>
+          <div class="article-body">
+            <p>Après résiliation, Mirifica Studio conserve les fichiers, sauvegardes et accès pendant <strong>30 jours</strong>. Passé ce délai, suppression définitive possible sans obligation de restitution. Le nom de domaine est transféré dans ce délai sous réserve du règlement intégral et du paiement du forfait de transfert de <strong>30 €</strong>.</p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ART 10 -->
+    <article class="cgv-article" id="art10">
+      <div class="article-num">Article 10</div>
+      <h2 class="article-title">Responsabilité, garanties et services tiers</h2>
+      <div class="article-body">
+        <p>Mirifica Studio s'engage à réaliser les prestations avec soin et professionnalisme. Sa responsabilité est limitée au montant total des sommes perçues au titre de la prestation concernée.</p>
+        <p>La maintenance technique exclut expressément :</p>
+        <ul>
+          <li>Les pannes imputables à l'hébergeur ou services tiers.</li>
+          <li>Les attaques externes ou intrusions.</li>
+          <li>Les dysfonctionnements liés à des outils tiers : Google Maps, Meta Pixel, Calendly, Stripe, plugins, API, registrar, services d'emails ou tout autre service indépendant — y compris toute modification, interruption, panne ou changement tarifaire de ces services.</li>
+          <li>Les erreurs causées par des manipulations du client via son interface d'administration.</li>
+          <li>L'ajout de nouvelles fonctionnalités ou refontes graphiques.</li>
+          <li>Les interventions urgentes hors horaires ouvrés.</li>
+        </ul>
+        <p>Mirifica Studio ne garantit aucun positionnement spécifique dans les résultats des moteurs de recherche.</p>
+      </div>
+    </article>
+
+    <!-- ART 11 -->
+    <article class="cgv-article" id="art11">
+      <div class="article-num">Article 11</div>
+      <h2 class="article-title">Confidentialité, données personnelles et RGPD</h2>
+      <div class="article-body">
+        <div class="sub-article">
+          <div class="sub-article-title">11.1 — Données de la relation commerciale</div>
+          <div class="article-body">
+            <p>Les données personnelles collectées sont traitées conformément au RGPD, utilisées uniquement pour la gestion de la relation client. Droit d'accès, rectification et suppression : <strong>mirificastudio@gmail.com</strong></p>
+          </div>
+        </div>
+        <div class="sub-article" style="margin-top: 1rem;">
+          <div class="sub-article-title">11.2 — Responsabilité RGPD du site client</div>
+          <div class="article-body">
+            <p>Le client est seul responsable de la conformité légale de son site. Mirifica Studio fournit une structure documentaire et technique de base (mentions légales, politique de confidentialité, bandeau cookies) sur la base des informations transmises par le client. Cette prestation ne constitue pas un audit juridique ni une garantie de conformité totale. Mirifica Studio ne saurait être tenu responsable d'informations erronées ou incomplètes transmises par le client.</p>
+          </div>
+        </div>
+        <div class="sub-article" style="margin-top: 1rem;">
+          <div class="sub-article-title">11.3 — Confidentialité</div>
+          <div class="article-body">
+            <p>Chaque partie s'engage à maintenir confidentielles les informations communiquées dans le cadre de la prestation.</p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ART 12 -->
+    <article class="cgv-article" id="art12">
+      <div class="article-num">Article 12</div>
+      <h2 class="article-title">Force majeure</h2>
+      <div class="article-body">
+        <p>Mirifica Studio ne saurait être tenu responsable d'un manquement en cas de force majeure au sens de l'article 1218 du Code civil. Les délais sont automatiquement suspendus pour la durée de l'événement.</p>
+      </div>
+    </article>
+
+    <!-- ART 13 -->
+    <article class="cgv-article" id="art13">
+      <div class="article-num">Article 13</div>
+      <h2 class="article-title">Droit applicable et litiges</h2>
+      <div class="article-body">
+        <p>Les présentes CGV sont soumises au <strong>droit français</strong>. En cas de litige, les parties s'engagent à rechercher une solution amiable sous 30 jours avant tout recours judiciaire. À défaut, le litige sera porté devant les tribunaux compétents du ressort du siège du prestataire, sauf règle d'ordre public contraire.</p>
+      </div>
+    </article>
+
+    <!-- ART 14 -->
+    <article class="cgv-article" id="art14">
+      <div class="article-num">Article 14</div>
+      <h2 class="article-title">Acceptation des CGV</h2>
+      <div class="article-body">
+        <p>La signature du devis ou bon de commande vaut <strong>acceptation pleine et entière</strong> des présentes CGV. Mirifica Studio se réserve le droit de les modifier. Tout client en cours de contrat sera informé par écrit de toute modification substantielle.</p>
+      </div>
+    </article>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Mirifica Studio</div>
+    <ul class="footer-links">
+      <li><a href="cgv.html">CGV</a></li>
+      <li><a href="mentions-legales.html">Mentions légales</a></li>
+    </ul>
+    <div class="footer-copy">© 2026 — Pau, France</div>
+  </footer>
+
+</body>
+</html>
