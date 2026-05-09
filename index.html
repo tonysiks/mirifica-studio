@@ -415,7 +415,7 @@
     /* ══════════════════════════════════════════════
        PRICING
     ══════════════════════════════════════════════ */
-    .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 4rem; max-width: 840px; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 4rem; max-width: 1200px; }
 
     .pcard {
       background: var(--w);
@@ -773,31 +773,49 @@
   <div class="pricing-grid">
     <div class="pcard reveal">
       <div class="plabel">One-shot</div>
-      <div class="pprice">800€ <span></span></div>
+      <div class="pprice">700€ <span></span></div>
       <div class="pdesc2">Vous payez une fois, le site vous appartient définitivement.</div>
       <ul class="pfeats">
-        <li>Site vitrine sur mesure</li>
+        <li>Site vitrine 5 à 7 pages</li>
         <li>Design responsive mobile</li>
         <li>Dashboard d'administration</li>
-        <li>1 mois de support inclus</li>
-        <li>Hébergement non inclus</li>
+        <li>Formation 30 min à la livraison</li>
+        <li>Mentions légales incluses</li>
+        <li>2 révisions incluses</li>
       </ul>
       <a href="#contact" class="btn-secondary" style="display:block;text-align:center;">Choisir cette offre</a>
     </div>
     <div class="pcard featured reveal">
       <div class="pbadge">Recommandé</div>
       <div class="plabel">Abonnement</div>
-      <div class="pprice">49€ <span>/ mois</span></div>
-      <div class="pdesc2">Site inclus, on gère tout. Résiliable à tout moment.</div>
+      <div class="pprice">69€ <span>/ mois</span></div>
+      <div class="pdesc2">Engagement 12 mois minimum.</div>
       <ul class="pfeats">
-        <li>Site vitrine sur mesure</li>
+        <li>Site vitrine 5 à 7 pages</li>
         <li>Dashboard d'administration</li>
-        <li>Prise de RDV en ligne</li>
-        <li>Hébergement &amp; maintenance</li>
-        <li>Mises à jour illimitées</li>
-        <li>Support WhatsApp prioritaire</li>
+        <li>Hébergement &amp; nom de domaine inclus</li>
+        <li>5 modifications/mois incluses</li>
+        <li>SEO de base inclus</li>
+        <li>Mentions légales incluses</li>
+        <li>Support WhatsApp lun-ven 9h-18h</li>
+        <li>Maintenance &amp; sécurité</li>
       </ul>
       <a href="#contact" class="btn-primary" style="display:block;text-align:center;">Démarrer maintenant →</a>
+    </div>
+    <div class="pcard reveal">
+      <div class="pbadge">Sur devis</div>
+      <div class="plabel">Sur mesure</div>
+      <div class="pprice" style="font-size:2rem;">Vous avez un projet spécifique ?</div>
+      <div class="pdesc2">E-commerce, espace membre, système de réservation avancé, tunnel de vente, application web sur mesure... Chaque projet complexe mérite une solution adaptée et un devis personnalisé.</div>
+      <ul class="pfeats">
+        <li>E-commerce &amp; paiement en ligne</li>
+        <li>Système de réservation avancé</li>
+        <li>Espace membre &amp; accès privé</li>
+        <li>Tunnel de vente</li>
+        <li>Intégrations API sur mesure</li>
+        <li>Application web complexe</li>
+      </ul>
+      <a href="#contact" class="btn-secondary" style="display:block;text-align:center;">Demander un devis</a>
     </div>
   </div>
 </section>
