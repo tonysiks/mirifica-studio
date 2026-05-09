@@ -61,8 +61,8 @@
       display: flex; align-items: center;
     }
     @keyframes logoFloat {
-      0%, 100% { transform: translateY(0px); }
-      50%       { transform: translateY(-4px); }
+      from { transform: translateY(0px); }
+      to   { transform: translateY(-6px); }
     }
 
     .nav-links { display: flex; gap: 1.8rem; list-style: none; }
@@ -199,29 +199,45 @@
       50%    { opacity:0.6; box-shadow:0 0 0 4px rgba(0,102,255,0); }
     }
 
-    /* Titre lettre par lettre */
+    /* Titre rotatif */
+    .hero-title-wrap {
+      display: grid;
+      grid-template-areas: "stack";
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto 1.75rem;
+      text-align: center;
+    }
     .hero-title {
+      grid-area: stack;
       font-family: var(--fd);
-      font-size: clamp(2rem, 5vw, 5rem);
+      font-size: clamp(2.5rem, 4.5vw, 4.5rem);
       font-weight: 800;
-      line-height: 1.1;
+      line-height: 1.14;
       letter-spacing: -0.03em;
       color: var(--text);
-      max-width: 880px;
-      margin-bottom: 1.75rem;
+      white-space: normal;
       word-break: keep-all;
-      overflow-wrap: normal;
+      hyphens: none;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: titleRotate 9s ease-in-out infinite;
     }
-    .hero-title .letter {
-      display: inline-block;
-      opacity: 0; transform: translateY(22px);
-      animation: letterIn 0.4s cubic-bezier(0.22,1,0.36,1) forwards;
+    .hero-title.rt-2 { animation-delay: 3s; }
+    .hero-title.rt-3 { animation-delay: 6s; }
+    @keyframes titleRotate {
+      0%   { opacity: 0; transform: translateY(16px); }
+      5%   { opacity: 1; transform: translateY(0); }
+      30%  { opacity: 1; transform: translateY(0); }
+      36%  { opacity: 0; transform: translateY(-16px); }
+      100% { opacity: 0; transform: translateY(-16px); }
     }
-    @keyframes letterIn { to { opacity:1; transform:translateY(0); } }
 
     .hero-sub {
       font-size: 1.15rem; color: var(--sub); max-width: 490px;
-      line-height: 1.75; margin-bottom: 2.6rem;
+      line-height: 1.75; margin: 0 auto 2.6rem;
+      text-align: center;
       opacity: 0; animation: fadeUp 0.7s 1.4s forwards;
     }
 
@@ -575,7 +591,7 @@
 <!-- ══ NAV ══ -->
 <nav>
   <a href="#" class="nav-logo">
-    <img src="logo.png" alt="Mirifica Studio" style="height:36px; display:block; animation: logoFloat 4s ease-in-out infinite;" />
+    <img src="logo.png" alt="Mirifica Studio" height="38" style="display:block; animation: logoFloat 3s ease-in-out infinite alternate;" />
   </a>
   <ul class="nav-links">
     <li><a href="#hero">Accueil</a></li>
@@ -607,9 +623,11 @@
       Agence Web Locale
     </div>
 
-    <h1 class="hero-title" id="heroTitle">
-      Votre commerce mérite une vitrine à la hauteur.
-    </h1>
+    <div class="hero-title-wrap">
+      <h1 class="hero-title rt-1">Donnez à votre activité la visibilité qu'elle mérite.</h1>
+      <h1 class="hero-title rt-2">Votre talent mérite d'être trouvé avant celui du concurrent.</h1>
+      <h1 class="hero-title rt-3">Chaque jour sans site, c'est un client perdu.</h1>
+    </div>
 
     <p class="hero-sub">
       On crée des sites web modernes pour les commerces locaux qui n'ont pas encore de présence en ligne — et on s'occupe de tout.
@@ -863,36 +881,6 @@
 </footer>
 
 <script>
-/* ── ANIMATION LETTRE PAR LETTRE ── */
-(function () {
-  const h1 = document.getElementById('heroTitle');
-  if (!h1) return;
-  let idx = 0;
-  const BASE = 0.25, STEP = 0.022;
-  function walk(node) {
-    if (node.nodeType === Node.TEXT_NODE) {
-      const frag = document.createDocumentFragment();
-      for (const ch of node.textContent) {
-        if (ch === '\n') continue;
-        if (ch === ' ') {
-          const s = document.createElement('span');
-          s.style.display = 'inline-block'; s.innerHTML = '&nbsp;';
-          frag.appendChild(s);
-        } else {
-          const s = document.createElement('span');
-          s.className = 'letter'; s.textContent = ch;
-          s.style.animationDelay = `${BASE + idx * STEP}s`;
-          idx++; frag.appendChild(s);
-        }
-      }
-      node.parentNode.replaceChild(frag, node);
-    } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'BR') {
-      [...node.childNodes].forEach(walk);
-    }
-  }
-  [...h1.childNodes].forEach(walk);
-})();
-
 /* ── SCROLL REVEAL ── */
 const revObs = new IntersectionObserver((entries) => {
   entries.forEach((e, i) => {
