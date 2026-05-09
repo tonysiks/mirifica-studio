@@ -234,12 +234,26 @@
       100% { opacity: 0; transform: translateY(-16px); }
     }
 
-    .hero-sub {
-      font-size: 1.15rem; color: var(--sub); max-width: 490px;
-      line-height: 1.75; margin: 0 auto 2.6rem;
+    .hero-sub-wrap {
+      display: grid;
+      grid-template-areas: "stack";
+      max-width: 560px;
+      width: 100%;
+      margin: 0 auto 2.6rem;
       text-align: center;
-      opacity: 0; animation: fadeUp 0.7s 1.4s forwards;
     }
+    .hero-sub {
+      grid-area: stack;
+      font-size: 1.1rem;
+      color: #555555;
+      line-height: 1.75;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: titleRotate 9s ease-in-out infinite;
+    }
+    .hero-sub.rs-2 { animation-delay: 3s; }
+    .hero-sub.rs-3 { animation-delay: 6s; }
 
     .hero-ctas {
       display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
@@ -591,7 +605,7 @@
 <!-- ══ NAV ══ -->
 <nav>
   <a href="#" class="nav-logo">
-    <img src="logo.png" alt="Mirifica Studio" height="38" style="display:block; animation: logoFloat 3s ease-in-out infinite alternate;" />
+    <img src="logo.png" alt="Mirifica Studio" height="52" style="display:block; animation: logoFloat 3s ease-in-out infinite alternate;" />
   </a>
   <ul class="nav-links">
     <li><a href="#hero">Accueil</a></li>
@@ -629,9 +643,11 @@
       <h1 class="hero-title rt-3">Chaque jour sans site, c'est un client perdu.</h1>
     </div>
 
-    <p class="hero-sub">
-      On crée des sites web modernes pour les commerces locaux qui n'ont pas encore de présence en ligne — et on s'occupe de tout.
-    </p>
+    <div class="hero-sub-wrap">
+      <p class="hero-sub rs-1">Création, hébergement, maintenance. Vous faites votre métier, on fait le reste.</p>
+      <p class="hero-sub rs-2">Pendant que vous travaillez, votre site travaille pour vous.</p>
+      <p class="hero-sub rs-3">Arrêtez de perdre des clients que vous ne verrez jamais.</p>
+    </div>
 
     <div class="hero-ctas">
       <a href="#contact" class="btn-primary">Obtenir mon site →</a>
